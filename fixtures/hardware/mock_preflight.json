@@ -1,0 +1,50 @@
+{
+  "schema_version": 2,
+  "source_kind": "synthetic",
+  "checks": {
+    "authorization": {
+      "status": "pass",
+      "reason": "simulated_predicate_met"
+    },
+    "model_ready": {
+      "status": "pass",
+      "reason": "simulated_predicate_met"
+    },
+    "clock_alignment": {
+      "status": "pass",
+      "reason": "simulated_predicate_met"
+    },
+    "gpu_allocation": {
+      "status": "pass",
+      "reason": "simulated_predicate_met"
+    },
+    "cuda_concurrency": {
+      "status": "pass",
+      "reason": "simulated_predicate_met"
+    },
+    "injection_locality": {
+      "status": "pass",
+      "reason": "simulated_predicate_met"
+    },
+    "replica_binding": {
+      "status": "pass",
+      "reason": "simulated_predicate_met"
+    },
+    "attempt_isolation": {
+      "status": "pass",
+      "reason": "simulated_predicate_met"
+    },
+    "engine_progress": {
+      "status": "pass",
+      "reason": "simulated_predicate_met"
+    },
+    "device_verification": {
+      "status": "blocked",
+      "reason": "synthetic_engine_only"
+    },
+    "evidence_freshness": {
+      "status": "not_tested",
+      "reason": "synthetic_probe_not_run"
+    }
+  }
+}

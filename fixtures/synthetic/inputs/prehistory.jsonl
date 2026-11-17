@@ -1,0 +1,2 @@
+{"run_id":"prehistory","event_id":"pre-work","type":"work_state","event_at_ns":0,"gw_at_ns":0,"gw_seq":1,"payload":{"replica_id":"A","epoch":1,"work_version":1,"work_key":"light","busy":true,"backlog":false,"sampled_ns":0}}
+{"run_id":"prehistory","event_id":"pre-step","type":"step_start","event_at_ns":50000000,"gw_at_ns":50000000,"gw_seq":2,"payload":{"replica_id":"A","epoch":1,"step_id":"probe","start_ns":50000000,"boundary_id":"mock-boundary","work_version":1}}

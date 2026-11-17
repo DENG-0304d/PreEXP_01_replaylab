@@ -1,0 +1,3 @@
+{"run_id":"cpu-health-calibration","record_id":"s1","kind":"healthy_calibration_sample","payload":{"source_kind":"synthetic","attempt_id":"cpu-health-calibration","replica_id":"A","work_key":"light","duration_ns":9000000}}
+{"run_id":"cpu-health-calibration","record_id":"s2","kind":"healthy_calibration_sample","payload":{"source_kind":"synthetic","attempt_id":"cpu-health-calibration","replica_id":"A","work_key":"light","duration_ns":10000000}}
+{"run_id":"cpu-health-calibration","record_id":"s3","kind":"healthy_calibration_sample","payload":{"source_kind":"synthetic","attempt_id":"cpu-health-calibration","replica_id":"A","work_key":"light","duration_ns":11000000}}

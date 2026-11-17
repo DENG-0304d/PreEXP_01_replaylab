@@ -1,0 +1,2 @@
+# M0/M1a use only the Python 3.11+ standard library.
+# Add pinned real-backend dependencies here once the M1b/M1c adapters land.

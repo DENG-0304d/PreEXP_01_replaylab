@@ -1,0 +1,782 @@
+{
+  "apiVersion": "v1",
+  "kind": "List",
+  "items": [
+    {
+      "apiVersion": "v1",
+      "kind": "ServiceAccount",
+      "metadata": {
+        "name": "replaylab-a",
+        "namespace": {
+          "$config": "namespace"
+        }
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "ServiceAccount",
+      "metadata": {
+        "name": "replaylab-gateway",
+        "namespace": {
+          "$config": "namespace"
+        }
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "ServiceAccount",
+      "metadata": {
+        "name": "replaylab-runner",
+        "namespace": {
+          "$config": "namespace"
+        }
+      }
+    },
+    {
+      "apiVersion": "rbac.authorization.k8s.io/v1",
+      "kind": "Role",
+      "metadata": {
+        "name": "replaylab-lease-writer",
+        "namespace": {
+          "$config": "namespace"
+        }
+      },
+      "rules": [
+        {
+          "apiGroups": [
+            "coordination.k8s.io"
+          ],
+          "resources": [
+            "leases"
+          ],
+          "resourceNames": [
+            {
+              "$config": "bench_lease_name"
+            }
+          ],
+          "verbs": [
+            "get",
+            "update"
+          ]
+        }
+      ]
+    },
+    {
+      "apiVersion": "rbac.authorization.k8s.io/v1",
+      "kind": "Role",
+      "metadata": {
+        "name": "replaylab-lease-reader",
+        "namespace": {
+          "$config": "namespace"
+        }
+      },
+      "rules": [
+        {
+          "apiGroups": [
+            "coordination.k8s.io"
+          ],
+          "resources": [
+            "leases"
+          ],
+          "resourceNames": [
+            {
+              "$config": "bench_lease_name"
+            }
+          ],
+          "verbs": [
+            "get"
+          ]
+        }
+      ]
+    },
+    {
+      "apiVersion": "rbac.authorization.k8s.io/v1",
+      "kind": "Role",
+      "metadata": {
+        "name": "replaylab-platform-reader",
+        "namespace": {
+          "$config": "namespace"
+        }
+      },
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch"
+          ]
+        },
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "services"
+          ],
+          "resourceNames": [
+            {
+              "$config": "replicas.A.service_name"
+            },
+            {
+              "$config": "replicas.B.service_name"
+            }
+          ],
+          "verbs": [
+            "get"
+          ]
+        },
+        {
+          "apiGroups": [
+            "discovery.k8s.io"
+          ],
+          "resources": [
+            "endpointslices"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch"
+          ]
+        }
+      ]
+    },
+    {
+      "apiVersion": "rbac.authorization.k8s.io/v1",
+      "kind": "RoleBinding",
+      "metadata": {
+        "name": "replaylab-runner-lease",
+        "namespace": {
+          "$config": "namespace"
+        }
+      },
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "replaylab-lease-writer"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "replaylab-runner",
+          "namespace": {
+            "$config": "namespace"
+          }
+        }
+      ]
+    },
+    {
+      "apiVersion": "rbac.authorization.k8s.io/v1",
+      "kind": "RoleBinding",
+      "metadata": {
+        "name": "replaylab-recovery-lease",
+        "namespace": {
+          "$config": "namespace"
+        }
+      },
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "replaylab-lease-writer"
+      },
+      "subjects": [
+        {
+          "kind": "User",
+          "name": {
+            "$config": "recovery_subject"
+          },
+          "apiGroup": "rbac.authorization.k8s.io"
+        }
+      ]
+    },
+    {
+      "apiVersion": "rbac.authorization.k8s.io/v1",
+      "kind": "RoleBinding",
+      "metadata": {
+        "name": "replaylab-a-lease",
+        "namespace": {
+          "$config": "namespace"
+        }
+      },
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "replaylab-lease-reader"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "replaylab-a",
+          "namespace": {
+            "$config": "namespace"
+          }
+        }
+      ]
+    },
+    {
+      "apiVersion": "rbac.authorization.k8s.io/v1",
+      "kind": "RoleBinding",
+      "metadata": {
+        "name": "replaylab-platform-reader",
+        "namespace": {
+          "$config": "namespace"
+        }
+      },
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "replaylab-platform-reader"
+      },
+      "subjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "replaylab-runner",
+          "namespace": {
+            "$config": "namespace"
+          }
+        },
+        {
+          "kind": "ServiceAccount",
+          "name": "replaylab-gateway",
+          "namespace": {
+            "$config": "namespace"
+          }
+        }
+      ]
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "PersistentVolumeClaim",
+      "metadata": {
+        "name": {
+          "$config": "output_pvc_name"
+        },
+        "namespace": {
+          "$config": "namespace"
+        }
+      },
+      "spec": {
+        "storageClassName": {
+          "$config": "output_storage_class"
+        },
+        "accessModes": [
+          "ReadWriteOnce"
+        ],
+        "resources": {
+          "requests": {
+            "storage": {
+              "$config": "output_storage_size"
+            }
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "apps/v1",
+      "kind": "Deployment",
+      "metadata": {
+        "name": {
+          "$config": "replicas.A.deployment_name"
+        },
+        "namespace": {
+          "$config": "namespace"
+        }
+      },
+      "spec": {
+        "replicas": 1,
+        "strategy": {
+          "type": "Recreate"
+        },
+        "selector": {
+          "matchLabels": {
+            "app.kubernetes.io/name": "replaylab",
+            "app.kubernetes.io/component": "a"
+          }
+        },
+        "template": {
+          "metadata": {
+            "labels": {
+              "app.kubernetes.io/name": "replaylab",
+              "app.kubernetes.io/component": "a"
+            }
+          },
+          "spec": {
+            "nodeSelector": {
+              "kubernetes.io/hostname": {
+                "$config": "node_hostname_label"
+              }
+            },
+            "automountServiceAccountToken": true,
+            "containers": [
+              {
+                "name": {
+                  "$config": "replicas.A.container_name"
+                },
+                "image": {
+                  "$config": "backend_image_digest"
+                },
+                "args": {
+                  "$config": "backend_args"
+                },
+                "ports": [
+                  {
+                    "name": "http",
+                    "containerPort": {
+                      "$config": "backend_port"
+                    }
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "nvidia.com/gpu": 1
+                  }
+                },
+                "startupProbe": {
+                  "httpGet": {
+                    "path": {
+                      "$config": "backend_startup_probe_path"
+                    },
+                    "port": "http"
+                  },
+                  "periodSeconds": 5,
+                  "timeoutSeconds": 2,
+                  "failureThreshold": 60
+                },
+                "readinessProbe": {
+                  "httpGet": {
+                    "path": {
+                      "$config": "backend_readiness_probe_path"
+                    },
+                    "port": "http"
+                  },
+                  "periodSeconds": 5,
+                  "timeoutSeconds": 2
+                },
+                "env": [
+                  {
+                    "name": "REPLAYLAB_NAMESPACE",
+                    "value": {
+                      "$config": "namespace"
+                    }
+                  },
+                  {
+                    "name": "REPLAYLAB_LEASE_NAME",
+                    "value": {
+                      "$config": "bench_lease_name"
+                    }
+                  }
+                ]
+              }
+            ],
+            "serviceAccountName": "replaylab-a"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "Service",
+      "metadata": {
+        "name": {
+          "$config": "replicas.A.service_name"
+        },
+        "namespace": {
+          "$config": "namespace"
+        }
+      },
+      "spec": {
+        "type": "ClusterIP",
+        "selector": {
+          "app.kubernetes.io/name": "replaylab",
+          "app.kubernetes.io/component": "a"
+        },
+        "ports": [
+          {
+            "name": "http",
+            "port": 80,
+            "targetPort": "http",
+            "protocol": "TCP"
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "apps/v1",
+      "kind": "Deployment",
+      "metadata": {
+        "name": {
+          "$config": "replicas.B.deployment_name"
+        },
+        "namespace": {
+          "$config": "namespace"
+        }
+      },
+      "spec": {
+        "replicas": 1,
+        "strategy": {
+          "type": "Recreate"
+        },
+        "selector": {
+          "matchLabels": {
+            "app.kubernetes.io/name": "replaylab",
+            "app.kubernetes.io/component": "b"
+          }
+        },
+        "template": {
+          "metadata": {
+            "labels": {
+              "app.kubernetes.io/name": "replaylab",
+              "app.kubernetes.io/component": "b"
+            }
+          },
+          "spec": {
+            "nodeSelector": {
+              "kubernetes.io/hostname": {
+                "$config": "node_hostname_label"
+              }
+            },
+            "automountServiceAccountToken": false,
+            "containers": [
+              {
+                "name": {
+                  "$config": "replicas.B.container_name"
+                },
+                "image": {
+                  "$config": "backend_image_digest"
+                },
+                "args": {
+                  "$config": "backend_args"
+                },
+                "ports": [
+                  {
+                    "name": "http",
+                    "containerPort": {
+                      "$config": "backend_port"
+                    }
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "nvidia.com/gpu": 1
+                  }
+                },
+                "startupProbe": {
+                  "httpGet": {
+                    "path": {
+                      "$config": "backend_startup_probe_path"
+                    },
+                    "port": "http"
+                  },
+                  "periodSeconds": 5,
+                  "timeoutSeconds": 2,
+                  "failureThreshold": 60
+                },
+                "readinessProbe": {
+                  "httpGet": {
+                    "path": {
+                      "$config": "backend_readiness_probe_path"
+                    },
+                    "port": "http"
+                  },
+                  "periodSeconds": 5,
+                  "timeoutSeconds": 2
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "Service",
+      "metadata": {
+        "name": {
+          "$config": "replicas.B.service_name"
+        },
+        "namespace": {
+          "$config": "namespace"
+        }
+      },
+      "spec": {
+        "type": "ClusterIP",
+        "selector": {
+          "app.kubernetes.io/name": "replaylab",
+          "app.kubernetes.io/component": "b"
+        },
+        "ports": [
+          {
+            "name": "http",
+            "port": 80,
+            "targetPort": "http",
+            "protocol": "TCP"
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "apps/v1",
+      "kind": "Deployment",
+      "metadata": {
+        "name": {
+          "$config": "gateway_deployment_name"
+        },
+        "namespace": {
+          "$config": "namespace"
+        }
+      },
+      "spec": {
+        "replicas": 1,
+        "strategy": {
+          "type": "Recreate"
+        },
+        "selector": {
+          "matchLabels": {
+            "app.kubernetes.io/name": "replaylab",
+            "app.kubernetes.io/component": "gateway"
+          }
+        },
+        "template": {
+          "metadata": {
+            "labels": {
+              "app.kubernetes.io/name": "replaylab",
+              "app.kubernetes.io/component": "gateway"
+            }
+          },
+          "spec": {
+            "nodeSelector": {
+              "kubernetes.io/hostname": {
+                "$config": "node_hostname_label"
+              }
+            },
+            "automountServiceAccountToken": true,
+            "containers": [
+              {
+                "name": "gateway",
+                "image": {
+                  "$config": "gateway_image_digest"
+                },
+                "ports": [
+                  {
+                    "name": "http",
+                    "containerPort": {
+                      "$config": "gateway_port"
+                    }
+                  }
+                ],
+                "startupProbe": {
+                  "httpGet": {
+                    "path": {
+                      "$config": "gateway_startup_probe_path"
+                    },
+                    "port": "http"
+                  },
+                  "periodSeconds": 5,
+                  "timeoutSeconds": 2,
+                  "failureThreshold": 60
+                },
+                "readinessProbe": {
+                  "httpGet": {
+                    "path": {
+                      "$config": "gateway_readiness_probe_path"
+                    },
+                    "port": "http"
+                  },
+                  "periodSeconds": 5,
+                  "timeoutSeconds": 2
+                },
+                "env": [
+                  {
+                    "name": "REPLAYLAB_NAMESPACE",
+                    "value": {
+                      "$config": "namespace"
+                    }
+                  },
+                  {
+                    "name": "REPLAYLAB_LEASE_NAME",
+                    "value": {
+                      "$config": "bench_lease_name"
+                    }
+                  },
+                  {
+                    "name": "REPLAYLAB_POD_UID",
+                    "valueFrom": {
+                      "fieldRef": {
+                        "fieldPath": "metadata.uid"
+                      }
+                    }
+                  },
+                  {
+                    "name": "REPLAYLAB_OUTPUT_DIR",
+                    "value": {
+                      "$config": "output_mount_path"
+                    }
+                  },
+                  {
+                    "name": "REPLAYLAB_A_SERVICE",
+                    "value": {
+                      "$config": "replicas.A.service_name"
+                    }
+                  },
+                  {
+                    "name": "REPLAYLAB_B_SERVICE",
+                    "value": {
+                      "$config": "replicas.B.service_name"
+                    }
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "output",
+                    "mountPath": {
+                      "$config": "output_mount_path"
+                    }
+                  }
+                ]
+              }
+            ],
+            "serviceAccountName": "replaylab-gateway",
+            "volumes": [
+              {
+                "name": "output",
+                "persistentVolumeClaim": {
+                  "claimName": {
+                    "$config": "output_pvc_name"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "Service",
+      "metadata": {
+        "name": {
+          "$config": "gateway_service_name"
+        },
+        "namespace": {
+          "$config": "namespace"
+        }
+      },
+      "spec": {
+        "type": "ClusterIP",
+        "selector": {
+          "app.kubernetes.io/name": "replaylab",
+          "app.kubernetes.io/component": "gateway"
+        },
+        "ports": [
+          {
+            "name": "http",
+            "port": 80,
+            "targetPort": "http",
+            "protocol": "TCP"
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "batch/v1",
+      "kind": "Job",
+      "metadata": {
+        "name": {
+          "$config": "job_name"
+        },
+        "namespace": {
+          "$config": "namespace"
+        }
+      },
+      "spec": {
+        "suspend": true,
+        "parallelism": 1,
+        "completions": 1,
+        "backoffLimit": 0,
+        "template": {
+          "metadata": {
+            "labels": {
+              "app.kubernetes.io/name": "replaylab",
+              "app.kubernetes.io/component": "runner"
+            }
+          },
+          "spec": {
+            "nodeSelector": {
+              "kubernetes.io/hostname": {
+                "$config": "node_hostname_label"
+              }
+            },
+            "automountServiceAccountToken": true,
+            "containers": [
+              {
+                "name": "runner",
+                "image": {
+                  "$config": "runner_image_digest"
+                },
+                "env": [
+                  {
+                    "name": "REPLAYLAB_NAMESPACE",
+                    "value": {
+                      "$config": "namespace"
+                    }
+                  },
+                  {
+                    "name": "REPLAYLAB_LEASE_NAME",
+                    "value": {
+                      "$config": "bench_lease_name"
+                    }
+                  },
+                  {
+                    "name": "REPLAYLAB_POD_UID",
+                    "valueFrom": {
+                      "fieldRef": {
+                        "fieldPath": "metadata.uid"
+                      }
+                    }
+                  },
+                  {
+                    "name": "REPLAYLAB_GATEWAY_SERVICE",
+                    "value": {
+                      "$config": "gateway_service_name"
+                    }
+                  },
+                  {
+                    "name": "REPLAYLAB_OUTPUT_DIR",
+                    "value": {
+                      "$config": "output_mount_path"
+                    }
+                  }
+                ],
+                "volumeMounts": [
+                  {
+                    "name": "output",
+                    "mountPath": {
+                      "$config": "output_mount_path"
+                    }
+                  }
+                ]
+              }
+            ],
+            "serviceAccountName": "replaylab-runner",
+            "volumes": [
+              {
+                "name": "output",
+                "persistentVolumeClaim": {
+                  "claimName": {
+                    "$config": "output_pvc_name"
+                  }
+                }
+              }
+            ],
+            "restartPolicy": "Never"
+          }
+        }
+      }
+    }
+  ]
+}

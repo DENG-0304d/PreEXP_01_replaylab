@@ -1,0 +1,161 @@
+{
+  "schema_version": 2,
+  "environment": {
+    "model": {
+      "name": null,
+      "revision": null
+    },
+    "tokenizer": {
+      "name": null,
+      "revision": null
+    },
+    "vllm": {
+      "version": null,
+      "build_id": null
+    },
+    "gpu": {
+      "model": null,
+      "device_ids": null
+    },
+    "replicas": {
+      "A": {
+        "endpoint": null,
+        "startup_args": null
+      },
+      "B": {
+        "endpoint": null,
+        "startup_args": null
+      }
+    },
+    "gateway_version": null,
+    "collector_version": null,
+    "authorization": null,
+    "kubernetes": {
+      "namespace": null,
+      "node_name": null,
+      "node_hostname_label": null,
+      "bench_lease_name": null,
+      "gateway_image_digest": null,
+      "runner_image_digest": null,
+      "backend_image_digest": null,
+      "gateway_deployment_name": null,
+      "gateway_service_name": null,
+      "job_name": null,
+      "backend_args": null,
+      "backend_port": null,
+      "backend_startup_probe_path": null,
+      "backend_readiness_probe_path": null,
+      "gateway_port": null,
+      "gateway_startup_probe_path": null,
+      "gateway_readiness_probe_path": null,
+      "output_mount_path": null,
+      "output_pvc_name": null,
+      "output_storage_class": null,
+      "output_storage_size": null,
+      "max_clock_alignment_error_ns": null,
+      "injector_max_runtime_ns": null,
+      "recovery_subject": null,
+      "replicas": {
+        "A": {
+          "deployment_name": null,
+          "service_name": null,
+          "container_name": null,
+          "expected_gpu_uuid": null
+        },
+        "B": {
+          "deployment_name": null,
+          "service_name": null,
+          "container_name": null,
+          "expected_gpu_uuid": null
+        }
+      },
+      "locality_acceptance": {
+        "a_min_slowdown": null,
+        "a_recovery_tolerance": null,
+        "b_tolerance": null,
+        "gateway_tolerance": null,
+        "metrics": null,
+        "min_samples": null
+      }
+    }
+  },
+  "replay": {
+    "input_trace_path": null,
+    "warmup_trace_path": null,
+    "prehistory_trace_path": null,
+    "clock_id": null,
+    "rotation_seed": null,
+    "send_jitter_ns": null,
+    "arm_jitter_ns": null,
+    "observation_end_ns": null,
+    "inputs_path": null
+  },
+  "observation": {
+    "tick_ns": null,
+    "work_ttl_ns": null,
+    "completion_ttl_ns": null,
+    "residual_ttl_ns": null,
+    "evidence_ttl_ns": null,
+    "alpha": null,
+    "threshold": null,
+    "health_profile_path": null,
+    "workload_buckets": {
+      "decode": null
+    },
+    "conditional_thresholds": {},
+    "healthy_alert_budget": null,
+    "healthy_redirect_budget": null
+  },
+  "router": {
+    "router_id": null,
+    "router_digest": null,
+    "state_ttl_ns": null,
+    "prefill_cost_ns_per_token": null,
+    "decode_load_cost_ns": null,
+    "speed_factor_min": null,
+    "speed_factor_max": null,
+    "reservation_ack_policy": null,
+    "reservation_timeout_ns": null
+  },
+  "diversion": {
+    "rule_id": null,
+    "rule_seed": null,
+    "ratio_ppm": null,
+    "duration_ns": null,
+    "max_redirects": null,
+    "max_b_unfinished": null,
+    "max_b_prefill_tokens": null,
+    "b_state_ttl_ns": null
+  },
+  "slo": {
+    "slo_id": null,
+    "threshold_source": null,
+    "deadline_basis": "scheduled_arrival_ns",
+    "b_generation_guardrail": null
+  },
+  "pairing": {
+    "prehistory_tolerances": {},
+    "delta_goodput_requests": null,
+    "min_independent_blocks": null,
+    "interval_algorithm": null,
+    "confidence_level": null,
+    "seed": null,
+    "capture_perturbation_budget": {},
+    "primary_contrast": null,
+    "bootstrap_samples": null,
+    "bootstrap_interpolation": null,
+    "primary_delay_ns": null
+  },
+  "injection": {
+    "scope": "A",
+    "implementation_id": null,
+    "level": null,
+    "start_offset_ns": null,
+    "stop_offset_ns": null,
+    "cleanup_timeout_ns": null,
+    "condition_id": null,
+    "start_jitter_ns": null,
+    "stop_jitter_ns": null
+  },
+  "source_kind": "real"
+}

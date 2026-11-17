@@ -1,0 +1,10 @@
+{
+  "branch_order": ["immediate", "reference", "delayed", "aa_first", "aa_second"],
+  "contrasts": {
+    "immediate-reference": 10,
+    "delayed-reference": 2,
+    "immediate-delayed": 8,
+    "aa_second-aa_first": -1
+  },
+  "aa_deltas": [-1]
+}

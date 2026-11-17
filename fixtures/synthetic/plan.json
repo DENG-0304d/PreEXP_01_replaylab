@@ -1,0 +1,16 @@
+{
+  "schema_version": 2,
+  "blocks": [
+    {
+      "condition_id": "cpu-action", "pair_id": "p-action", "anchor_id": "a0", "anchor_at_ns": 100000000,
+      "study_split": "validation", "kind": "action",
+      "branches": [{"role": "reference", "delay_ns": null}, {"role": "immediate", "delay_ns": 0},
+                   {"role": "delayed", "delay_ns": 100000000}]
+    },
+    {
+      "condition_id": "cpu-aa", "pair_id": "p-aa", "anchor_id": "a0", "anchor_at_ns": 100000000,
+      "study_split": "calibration", "kind": "aa",
+      "branches": [{"role": "aa_first", "delay_ns": null}, {"role": "aa_second", "delay_ns": null}]
+    }
+  ]
+}

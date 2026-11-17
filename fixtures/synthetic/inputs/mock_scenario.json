@@ -1,0 +1,21 @@
+{
+  "schema_version": 2,
+  "service_ns": {"A": 1000000, "B": 1000000},
+  "degraded_a_ns": 8000000,
+  "noise_seed": 23,
+  "noise_by_condition": {"cpu-action": 0, "cpu-aa": 1000000},
+  "observations": [
+    {
+      "at_ns": 100000000, "event_id": "synthetic-pending", "type": "inflight_snapshot",
+      "payload": {"replica_id":"A","epoch":1,"step_id":"probe","sample_ns":100000000,
+                  "start_event_id":"pre-step","work_version":1,"boundary_id":"mock-boundary",
+                  "status":"PENDING_VERIFIED","marker_status":"recorded","validation_reason":null}
+    },
+    {
+      "at_ns": 150000000, "event_id": "synthetic-complete", "type": "step_complete",
+      "payload": {"replica_id":"A","epoch":1,"step_id":"probe","end_ns":150000000,
+                  "duration_ns":100000000,"work_key":"light","boundary_id":"mock-boundary"}
+    }
+  ],
+  "failures": []
+}

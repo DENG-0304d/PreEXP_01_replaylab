@@ -1,0 +1,2 @@
+replica_id,work_key,healthy_median_ns,gap_limit_ns,inflight_limit_ns,calibration_count
+A,light,10000000,240000000,40000000,3
